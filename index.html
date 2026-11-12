@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAWAAD AI | Code with Abdul Khadar Dakhni</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #080d1b;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #263653;
+        }
+
+        header h2 {
+            color: #42caff;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .robot {
+            font-size: 90px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #42caff;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #b7c5dc;
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
+
+        .start-btn {
+            background: #168bd0;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            color: #8292aa;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>JAWAAD AI</h2>
+        <span>Personal Assistant for Abdul khadar Dakhani</span>
+    </header>
+
+    <section class="hero">
+        <div class="robot">🤖</div>
+
+        <h1>MEET JAWAAD AI</h1>
+
+        <p class="description">
+            Your Personal AI Assistant
+            <br><br>
+            Ask questions. Explore ideas. Experience AI.
+        </p>
+
+        
+    </section>
+
+<section style="max-width:650px; margin:20px auto 60px; padding:25px; background:#111c32; border:1px solid #263653; border-radius:18px;">
+
+    <h2 style="color:#42caff; margin-bottom:20px;">
+        Chat with JAWAAD
+    </h2>
+
+    <div id="messages" style="min-height:100px; color:#b7c5dc; margin-bottom:20px;">
+        JAWAAD: Hello! How can I help you ?
+    </div>
+
+    
+<input
+    id="userInput"
+    type="text"
+    placeholder="Ask JAWAAD anything..."
+    style="width:55%; padding:14px; border-radius:10px; border:none;"
+>
+
+<button
+    onclick="sendMessage()"
+    style="padding:14px; background:#168bd0; color:white; border:none; border-radius:10px; cursor:pointer;">
+    Send
+</button>
+
+<button
+    type="button"
+    onclick="startListening()"
+    style="padding:14px; background:#16a085; color:white; border:none; border-radius:10px; cursor:pointer;">
+    🎤 Speak
+
+<div id="voiceStatus" style="
+    margin-top: 15px;
+    color: #16d9c5;
+    font-size: 15px;
+    text-align: center;
+">
+    JAWAAD is ready
+</div>
+
+</button>
+
+
+</section>
+
+
+<script>
+async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const messages = document.getElementById("messages");
+
+    const message = input.value.trim();
+    if (!message) return;
+
+    messages.innerHTML += `<p style="margin-top:15px;color:white;">You: ${message.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`;
+
+    input.value = "";
+
+    const loading = document.createElement("p");
+    loading.style.color = "#42caff";
+    loading.textContent = "JAWAAD is thinking...";
+    messages.appendChild(loading);
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        const data = await response.json();
+        
+const reply = data.reply || data.error || "JAWAAD could not reply.";
+
+loading.textContent = reply;
+
+// Make JAWAAD speak its reply
+if (data.reply && "speechSynthesis" in window) {
+    window.speechSynthesis.cancel();
+
+   
+const speech = new SpeechSynthesisUtterance(data.reply);
+
+speech.lang = "en-IN";
+speech.rate = 1;
+speech.pitch = 1;
+
+speech.onstart = function () {
+    document.getElementById("voiceStatus").textContent =
+        "🔊 JAWAAD is speaking...";
+};
+
+speech.onend = function () {
+    document.getElementById("voiceStatus").textContent =
+        "✨ JAWAAD is ready";
+};
+
+window.speechSynthesis.speak(speech);
+
+}
+
+    } catch (error) {
+        loading.textContent = "Connection error. Check whether JAWAAD's backend is running.";
+    }
+}
+
+function startListening() {
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Voice recognition is not supported. Please use Google Chrome.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+
+recognition.onstart = function () {
+    document.getElementById("userInput").placeholder =
+        "JAWAAD is listening...";
+
+    document.getElementById("voiceStatus").textContent =
+        "🎤 JAWAAD is listening...";
+};
+
+
+    recognition.onresult = function (event) {
+        const spokenText = event.results[0][0].transcript;
+
+        document.getElementById("userInput").value = spokenText;
+
+        sendMessage();
+    };
+
+    recognition.onerror = function (event) {
+        alert("Microphone error: " + event.error);
+    };
+
+  
+recognition.onend = function () {
+    document.getElementById("userInput").placeholder =
+        "Ask JAWAAD anything...";
+
+    document.getElementById("voiceStatus").textContent =
+        "✨ JAWAAD is ready";
+};
+
+
+    recognition.start();
+}
+
+</script>
+
+
+
+    <footer>
+        Built  by  Abdul Khadar Dakhni....
+    </footer>
+
+</body>
+</html>
