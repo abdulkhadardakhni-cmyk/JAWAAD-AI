@@ -174,24 +174,42 @@ if (data.reply && "speechSynthesis" in window) {
     window.speechSynthesis.cancel();
 
    
-const speech = new SpeechSynthesisUtterance(data.reply);
+document.getElementById("voiceStatus").textContent =
+    "🔊 JAWAAD is preparing his voice...";
 
-speech.lang = "en-IN";
-speech.rate = 1;
-speech.pitch = 1;
+fetch("https://jawaad-ai.onrender.com/speak", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        message: data.reply
+    })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error("Voice service failed");
+    }
+    return response.blob();
+})
+.then(blob => {
+    const audio = new Audio(URL.createObjectURL(blob));
 
-speech.onstart = function () {
     document.getElementById("voiceStatus").textContent =
         "🔊 JAWAAD is speaking...";
-};
 
-speech.onend = function () {
+    audio.onended = function () {
+        document.getElementById("voiceStatus").textContent =
+            "✨ JAWAAD is ready";
+        URL.revokeObjectURL(audio.src);
+    };
+
+    audio.play();
+})
+.catch(error => {
     document.getElementById("voiceStatus").textContent =
-        "✨ JAWAAD is ready";
-};
-
-window.speechSynthesis.speak(speech);
-
+        "Voice error: " + error.message;
+});
 }
 
     } catch (error) {
