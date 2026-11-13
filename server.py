@@ -28,3 +28,22 @@ def chat(request: ChatRequest):
         return {"reply": answer}
     except Exception as error:
         return {"error": str(error)}
+        from fastapi.responses import StreamingResponse
+import edge_tts
+import io
+
+@app.post("/speak")
+async def speak(request: ChatRequest):
+    voice = "en-US-GuyNeural"
+    communicate = edge_tts.Communicate(request.message, voice)
+
+    audio = bytearray()
+
+    async for chunk in communicate.stream():
+        if chunk["type"] == "audio":
+            audio.extend(chunk["data"])
+
+    return StreamingResponse(
+        io.BytesIO(audio),
+        media_type="audio/mpeg"
+    )
