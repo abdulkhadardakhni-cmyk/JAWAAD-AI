@@ -4,603 +4,591 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JAWAAD AI | Code with Khadar Dakhni</title>
+<title>JAWAAD AI | Abdul Khadar Dakhani</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-    --bg: #070b14;
-    --panel: #0d1423;
-    --panel2: #111c30;
-    --border: rgba(148,163,184,.13);
-    --cyan: #43d9ff;
-    --purple: #9272ff;
-    --text: #f4f7ff;
-    --muted: #91a0b9;
+  --bg: #080b14;
+  --panel: #101625;
+  --panel2: #151e30;
+  --blue: #55aaff;
+  --purple: #9b7bff;
+  --text: #f3f6ff;
+  --muted: #8b96ac;
+  --border: rgba(255,255,255,.08);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; }
 
 body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: Inter, Arial, sans-serif;
-    min-height: 100vh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  height: 100vh;
+  overflow: hidden;
 }
-
-button, input { font: inherit; }
 
 .app {
-    display: flex;
-    min-height: 100vh;
+  display: grid;
+  grid-template-columns: 245px minmax(0,1fr) 285px;
+  height: 100vh;
 }
 
+/* SIDEBAR */
 .sidebar {
-    width: 260px;
-    background: #090f1c;
-    border-right: 1px solid var(--border);
-    padding: 25px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  background: #0c111e;
+  border-right: 1px solid var(--border);
+  padding: 23px 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 28px;
 }
 
-.brand-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
-    background: linear-gradient(135deg,var(--cyan),var(--purple));
-    display: grid;
-    place-items: center;
-    color: #07101d;
-    font-size: 23px;
-    font-weight: bold;
-    box-shadow: 0 0 25px #43d9ff40;
-}
-
-.brand h2 {
-    font-size: 20px;
-    letter-spacing: 1px;
-}
-
-.brand small {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 4px;
-}
+.brand span { color: var(--blue); }
 
 .new-chat {
-    padding: 14px;
-    border: 1px solid #43d9ff55;
-    background: #43d9ff12;
-    color: var(--cyan);
-    border-radius: 12px;
-    cursor: pointer;
-    text-align: left;
+  border: 1px solid rgba(85,170,255,.35);
+  background: rgba(85,170,255,.09);
+  color: white;
+  padding: 13px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
 }
 
 .side-label {
-    font-size: 11px;
-    color: #687a96;
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin: 30px 8px 12px;
 }
 
-.history-item {
-    color: var(--muted);
-    padding: 11px;
-    border-radius: 9px;
-    font-size: 13px;
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.history {
+  color: #bdc7d9;
+  font-size: 13px;
+  padding: 11px;
+  border-radius: 9px;
+  cursor: pointer;
 }
 
-.history-item:hover {
-    background: #17243a;
-    color: white;
+.history:hover { background: var(--panel2); }
+
+.profile {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding-top: 17px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
 }
 
-.sidebar-footer {
-    margin-top: auto;
-    border-top: 1px solid var(--border);
-    padding-top: 18px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.8;
+.avatar {
+  background: linear-gradient(135deg,var(--blue),var(--purple));
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 800;
 }
 
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
+/* CHAT */
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background:
+    radial-gradient(ellipse at 50% -20%,rgba(58,112,190,.15),transparent 55%),
+    var(--bg);
 }
 
 .topbar {
-    height: 76px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 35px;
+  height: 72px;
+  padding: 0 25px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.topbar-title {
-    font-size: 14px;
-    color: #c5d1e5;
-}
+.topbar small { color: var(--muted); }
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #64e7b0;
-    font-size: 12px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background: #42e6a4;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #42e6a4;
-}
-
-.content {
-    flex: 1;
-    width: 100%;
-    max-width: 1050px;
-    margin: auto;
-    padding: 45px 35px 25px;
-    display: flex;
-    flex-direction: column;
-}
-
-.welcome {
-    text-align: center;
-    margin: 15px 0 35px;
-}
-
-.orb {
-    width: 105px;
-    height: 105px;
-    margin: 0 auto 25px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 43px;
-    background: radial-gradient(circle at 35% 30%,#5be8ff,#2871cc 50%,#6c42c9);
-    box-shadow: 0 0 35px #43d9ff55, 0 0 85px #8060ff22;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-9px); }
-}
-
-.welcome h1 {
-    font-size: clamp(28px,4vw,42px);
-    letter-spacing: -1px;
-}
-
-.gradient {
-    background: linear-gradient(90deg,var(--cyan),#a88cff);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.welcome p {
-    color: var(--muted);
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.suggestions {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 12px;
-    max-width: 650px;
-    width: 100%;
-    margin: 0 auto 28px;
-}
-
-.suggestion {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    padding: 16px;
-    border-radius: 13px;
-    color: #c8d5e9;
-    text-align: left;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.suggestion:hover {
-    border-color: var(--cyan);
-    transform: translateY(-2px);
-    background: #122038;
-}
-
-.suggestion span {
-    display: block;
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 7px;
+.online {
+  color: #60dfaa;
+  font-size: 12px;
 }
 
 .messages {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 10px 0 25px;
-    width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px max(22px,7%);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.welcome {
+  text-align: center;
+  margin: auto 0;
+}
+
+.welcome h1 {
+  font-size: clamp(27px,4vw,40px);
+  margin-bottom: 10px;
+}
+
+.welcome h1 span {
+  background: linear-gradient(90deg,var(--blue),var(--purple));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.welcome p { color: var(--muted); }
+
+.suggestions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  max-width: 510px;
+  margin: 28px auto;
+}
+
+.suggestion {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: #dce5f5;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.suggestion:hover {
+  border-color: var(--blue);
 }
 
 .message {
-    max-width: 82%;
-    padding: 16px 19px;
-    border-radius: 16px;
-    line-height: 1.65;
-    font-size: 14px;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
+  max-width: 82%;
+  padding: 15px 17px;
+  border-radius: 15px;
+  line-height: 1.65;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .user {
-    align-self: flex-end;
-    background: linear-gradient(135deg,#175a9b,#5142a4);
-    border-bottom-right-radius: 4px;
+  align-self: flex-end;
+  background: linear-gradient(135deg,#2467ad,#5745a7);
 }
 
-.ai {
-    align-self: flex-start;
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-}
-
-.message-label {
-    font-size: 11px;
-    color: var(--cyan);
-    margin-bottom: 7px;
-    letter-spacing: .5px;
+.bot {
+  align-self: flex-start;
+  background: var(--panel2);
+  border: 1px solid var(--border);
 }
 
 .composer-wrap {
-    position: sticky;
-    bottom: 0;
-    background: linear-gradient(transparent,var(--bg) 20%);
-    padding: 25px 0 12px;
+  padding: 15px 6% 20px;
 }
 
 .composer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #101a2c;
-    border: 1px solid #334765;
-    border-radius: 17px;
-    padding: 9px;
-    box-shadow: 0 10px 40px #0006;
-}
-
-.composer:focus-within {
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 3px #43d9ff13;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid rgba(85,170,255,.25);
+  border-radius: 16px;
+  padding: 9px;
 }
 
 .composer input {
-    flex: 1;
-    min-width: 0;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: white;
-    padding: 12px;
-    font-size: 14px;
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 12px;
+  font-size: 14px;
 }
 
-.composer input::placeholder { color: #71819a; }
-
-.icon-btn {
-    width: 43px;
-    height: 43px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: #1a2940;
-    color: white;
-    cursor: pointer;
-    font-size: 17px;
+.control {
+  border: none;
+  border-radius: 11px;
+  padding: 12px 15px;
+  cursor: pointer;
+  color: white;
+  background: var(--panel2);
 }
 
-.icon-btn:hover { border-color: var(--cyan); }
-
-.send-btn {
-    background: linear-gradient(135deg,#27bce9,#7861ed);
-    color: white;
-    border: none;
-    padding: 0 20px;
-    height: 43px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
+.send {
+  background: linear-gradient(135deg,#398de4,#7655d9);
+  font-weight: 700;
 }
 
-.send-btn:disabled { opacity: .5; cursor: wait; }
+.mic.listening { background: #b72c52; }
 
-.voice-status {
-    text-align: center;
-    color: #7f94b2;
-    font-size: 11px;
-    margin-top: 13px;
-    min-height: 16px;
+#voiceStatus {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  min-height: 16px;
+  margin-top: 9px;
 }
 
-.bottom-note {
-    text-align: center;
-    color: #596b84;
-    font-size: 11px;
-    padding-top: 12px;
+/* AI ORB PANEL */
+.ai-panel {
+  background: #0c111e;
+  border-left: 1px solid var(--border);
+  padding: 25px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@media(max-width:750px) {
-    .sidebar { display: none; }
-    .topbar { padding: 0 18px; height: 65px; }
-    .content { padding: 30px 17px 15px; }
-    .welcome { margin: 20px 0 25px; }
-    .orb { width: 85px; height: 85px; font-size: 35px; }
-    .suggestions { grid-template-columns: 1fr; }
-    .message { max-width: 94%; }
-    .composer { gap: 6px; }
-    .send-btn { padding: 0 13px; }
-    .composer input { padding: 9px 5px; }
+.ai-panel h3 {
+  font-size: 14px;
+  letter-spacing: 1px;
 }
 
+.orb {
+  width: 155px;
+  height: 155px;
+  border-radius: 50%;
+  margin: auto 0 20px;
+  background:
+    radial-gradient(circle at 35% 30%,#c2eaff 0%,#55aaff 17%,#5654bd 48%,#11182e 72%);
+  box-shadow:
+    0 0 35px rgba(70,150,255,.4),
+    0 0 90px rgba(130,90,255,.22),
+    inset -12px -15px 30px #090d1a;
+  animation: float 4s ease-in-out infinite;
+  position: relative;
+}
+
+.orb:after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border: 1px solid rgba(100,170,255,.25);
+  border-radius: 50%;
+  animation: pulse 3s infinite;
+}
+
+.orb.active {
+  animation: float .8s ease-in-out infinite, pulse 1.2s infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: .8; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
+.ai-name { font-weight: 800; font-size: 21px; }
+.ai-caption { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+.wave {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  height: 35px;
+  margin: 18px 0;
+}
+
+.wave i {
+  width: 4px;
+  height: 8px;
+  border-radius: 8px;
+  background: var(--blue);
+  animation: wave 1s ease-in-out infinite alternate;
+}
+
+.wave i:nth-child(2n) { animation-delay: .2s; }
+.wave i:nth-child(3n) { animation-delay: .4s; }
+
+@keyframes wave {
+  to { height: 29px; }
+}
+
+.voice-label {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: auto;
+}
+
+.footer {
+  color: #67738b;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 25px;
+}
+
+/* MOBILE */
+@media(max-width:950px) {
+  .app { grid-template-columns: 205px minmax(0,1fr); }
+  .ai-panel { display: none; }
+}
+
+@media(max-width:620px) {
+  body { overflow: hidden; }
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .topbar { padding: 0 16px; }
+  .messages { padding: 20px 15px; }
+  .composer-wrap { padding: 10px 12px 15px; }
+  .message { max-width: 92%; }
+  .suggestions { grid-template-columns: 1fr; }
+  .control { padding: 12px; }
+}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<aside class="sidebar">
-    <div class="brand">
-        <div class="brand-icon">J</div>
-        <div>
-            <h2>JAWAAD AI</h2>
-            <small>INTELLIGENCE SYSTEM</small>
-        </div>
+  <aside class="sidebar">
+    <div class="brand">JAWAAD<span>.</span>AI</div>
+    <button class="new-chat" onclick="newChat()">＋ &nbsp; New Chat</button>
+
+    <div class="side-label">WORKSPACE</div>
+    <div class="history">✦ &nbsp; AI Assistant</div>
+    <div class="history">◉ &nbsp; Voice Assistant</div>
+
+    <div class="side-label">CHAT HISTORY</div>
+    <div id="historyList">
+      <div class="history">Your conversations appear here</div>
     </div>
 
-    <button class="new-chat" onclick="newChat()">＋ &nbsp; New conversation</button>
-
-    <div>
-        <div class="side-label">WORKSPACE</div>
-        <div class="history-item">✦ &nbsp; AI Assistant</div>
-        <div class="history-item">◈ &nbsp; Voice Assistant</div>
+    <div class="profile">
+      <div class="avatar">K</div>
+      <div>
+        <strong style="font-size:12px">Abdul Khadar</strong><br>
+        <small style="color:var(--muted)">Creator</small>
+      </div>
     </div>
+  </aside>
 
-    <div>
-        <div class="side-label">RECENT CHATS</div>
-        <div id="historyList">
-            <div class="history-item">Your conversations appear here</div>
-        </div>
-    </div>
-
-    <div class="sidebar-footer">
-        <strong>JAWAAD AI</strong><br>
-        Built by Abdul Khadar Dakhni<br>
-        <span style="color:#43d9ff">● System online</span>
-    </div>
-</aside>
-
-<main class="main">
+  <main class="chat-area">
     <header class="topbar">
-        <div class="topbar-title">Personal AI Workspace</div>
-        <div class="status"><span class="dot"></span> ONLINE</div>
+      <div>
+        <strong>JAWAAD AI</strong><br>
+        <small>Your personal intelligent assistant</small>
+      </div>
+      <div class="online">● Online</div>
     </header>
 
-    <section class="content">
-        <div class="welcome" id="welcome">
-            <div class="orb">✦</div>
-            <h1>Meet <span class="gradient">JAWAAD AI</span></h1>
-            <p>Your intelligent personal assistant.<br>
-            Think smarter. Create more. Explore everything.</p>
-        </div>
+    <section class="messages" id="messages">
+      <div class="welcome" id="welcome">
+        <h1>Hello, I'm <span>JAWAAD.</span></h1>
+        <p>Your AI assistant. Ask me anything.</p>
 
-        <div class="suggestions" id="suggestions">
-            <button class="suggestion" onclick="askPrompt('Explain artificial intelligence simply')">
-                ✧ Learn something new
-                <span>Understand complex topics easily</span>
-            </button>
-            <button class="suggestion" onclick="askPrompt('Give me creative project ideas')">
-                ◈ Explore ideas
-                <span>Discover creative possibilities</span>
-            </button>
-            <button class="suggestion" onclick="askPrompt('Help me write a professional email')">
-                ✎ Write something
-                <span>Create messages and documents</span>
-            </button>
-            <button class="suggestion" onclick="askPrompt('Give me a daily productivity plan')">
-                ⌘ Boost productivity
-                <span>Plan your next steps</span>
-            </button>
+        <div class="suggestions">
+          <button class="suggestion" onclick="usePrompt('Explain artificial intelligence simply')">✦ Explain AI simply</button>
+          <button class="suggestion" onclick="usePrompt('Help me write Python code')">⌘ Help with coding</button>
+          <button class="suggestion" onclick="usePrompt('Give me ideas for a project')">◈ Project ideas</button>
+          <button class="suggestion" onclick="usePrompt('Tell me something interesting')">◎ Something interesting</button>
         </div>
-
-        <div class="messages" id="messages" aria-live="polite"></div>
-
-        <div class="composer-wrap">
-            <div class="composer">
-                <button class="icon-btn" type="button" onclick="startListening()" title="Speak">🎤</button>
-                <input id="userInput" type="text" placeholder="Message JAWAAD AI..." autocomplete="off">
-                <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send ↗</button>
-            </div>
-            <div class="voice-status" id="voiceStatus">✦ JAWAAD is ready to assist you</div>
-            <div class="bottom-note">JAWAAD AI can make mistakes. Verify important information.</div>
-        </div>
+      </div>
     </section>
-</main>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <button class="control mic" id="micButton" onclick="startListening()" title="Speak">🎤</button>
+        <input id="userInput" placeholder="Message JAWAAD AI..." autocomplete="off">
+        <button class="control send" id="sendButton" onclick="sendMessage()">Send ➤</button>
+      </div>
+      <div id="voiceStatus">Microphone ready · American English voice</div>
+    </div>
+  </main>
+
+  <aside class="ai-panel">
+    <h3>YOUR AI COMPANION</h3>
+    <div class="orb" id="orb"></div>
+    <div class="ai-name">JAWAAD</div>
+    <div class="ai-caption">Artificial Intelligence</div>
+    <div class="wave" id="wave">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="voice-label" id="assistantStatus">Ready to assist you</div>
+    <div class="footer">Crafted with code by Abdul Khadar Dakhani</div>
+  </aside>
+
 </div>
 
 <script>
 const API = "https://jawaad-ai.onrender.com";
+
 const messages = document.getElementById("messages");
 const input = document.getElementById("userInput");
-const voiceStatus = document.getElementById("voiceStatus");
-const sendBtn = document.getElementById("sendBtn");
+const statusText = document.getElementById("voiceStatus");
+const assistantStatus = document.getElementById("assistantStatus");
+const orb = document.getElementById("orb");
+const micButton = document.getElementById("micButton");
+
+let conversationNames = [];
 
 function addMessage(text, type) {
-    const bubble = document.createElement("div");
-    bubble.className = "message " + type;
-
-    const label = document.createElement("div");
-    label.className = "message-label";
-    label.textContent = type === "user" ? "YOU" : "JAWAAD AI";
-
-    const content = document.createElement("div");
-    content.textContent = text;
-
-    bubble.appendChild(label);
-    bubble.appendChild(content);
-    messages.appendChild(bubble);
-    messages.scrollIntoView({ behavior: "smooth", block: "end" });
-
-    return content;
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
 }
 
-function askPrompt(text) {
-    input.value = text;
-    sendMessage();
+function usePrompt(text) {
+  input.value = text;
+  sendMessage();
 }
 
 async function sendMessage() {
-    const message = input.value.trim();
-    if (!message || sendBtn.disabled) return;
+  const message = input.value.trim();
+  if (!message) return;
 
-    document.getElementById("welcome").style.display = "none";
-    document.getElementById("suggestions").style.display = "none";
+  document.getElementById("welcome")?.remove();
+  input.value = "";
+  addMessage(message, "user");
 
-    addMessage(message, "user");
-    input.value = "";
+  const loading = addMessage("JAWAAD is thinking...", "bot");
+  assistantStatus.textContent = "Thinking...";
+  orb.classList.add("active");
 
-    const loading = addMessage("JAWAAD is thinking...", "ai");
-    sendBtn.disabled = true;
+  try {
+    const response = await fetch(`${API}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: message })
+    });
 
-    try {
-        const response = await fetch(API + "/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message })
-        });
+    if (!response.ok) throw new Error("Chat request failed");
 
-        if (!response.ok) throw new Error("Chat service error");
+    const data = await response.json();
+    const reply = data.reply || data.response || data.message || "I couldn't generate a response.";
 
-        const data = await response.json();
-        const reply = data.reply || data.error || "JAWAAD could not reply.";
-        loading.textContent = reply;
+    loading.textContent = reply;
+    assistantStatus.textContent = "Speaking...";
+    await speakReply(reply);
 
-        if (data.reply) speakReply(data.reply);
-
-    } catch (error) {
-        loading.textContent = "Connection error. Please try again.";
-        voiceStatus.textContent = "⚠ Chat connection problem";
-    } finally {
-        sendBtn.disabled = false;
-        input.focus();
+  } catch (error) {
+    loading.textContent = "Connection error. Please try again.";
+    statusText.textContent = "Unable to connect to JAWAAD AI.";
+    assistantStatus.textContent = "Connection issue";
+  } finally {
+    orb.classList.remove("active");
+    if (assistantStatus.textContent === "Speaking...") {
+      assistantStatus.textContent = "Ready to assist you";
     }
+  }
+
+  conversationNames.unshift(message.slice(0, 30));
+  updateHistory();
 }
 
 async function speakReply(text) {
-    voiceStatus.textContent = "🔊 Preparing American male voice...";
+  try {
+    const response = await fetch(`${API}/speak`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text })
+    });
 
-    try {
-        const response = await fetch(API + "/speak", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-        });
+    if (!response.ok) throw new Error("Voice request failed");
 
-        if (!response.ok) throw new Error("Voice service failed");
+    const blob = await response.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
 
-        const blob = await response.blob();
-        const audioUrl = URL.createObjectURL(blob);
-        const audio = new Audio(audioUrl);
-
-        voiceStatus.textContent = "🔊 JAWAAD is speaking...";
-
-        audio.onended = function() {
-            voiceStatus.textContent = "✦ JAWAAD is ready";
-            URL.revokeObjectURL(audioUrl);
-        };
-
-        audio.onerror = function() {
-            voiceStatus.textContent = "⚠ Audio playback failed";
-            URL.revokeObjectURL(audioUrl);
-        };
-
-        await audio.play();
-
-    } catch (error) {
-        voiceStatus.textContent = "⚠ Voice error: " + error.message;
-    }
+    audio.onended = () => URL.revokeObjectURL(audioUrl);
+    await audio.play();
+  } catch (error) {
+    statusText.textContent = "Text reply received; voice unavailable.";
+  }
 }
 
-function startListening() {
-    const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+function updateHistory() {
+  const list = document.getElementById("historyList");
+  list.replaceChildren();
 
-    if (!SpeechRecognition) {
-        alert("Voice recognition is not supported. Please use Google Chrome.");
-        return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onstart = function() {
-        voiceStatus.textContent = "🎤 JAWAAD is listening...";
-        input.placeholder = "Listening...";
-    };
-
-    recognition.onresult = function(event) {
-        input.value = event.results[0][0].transcript;
-        sendMessage();
-    };
-
-    recognition.onerror = function(event) {
-        voiceStatus.textContent = "Microphone error: " + event.error;
-    };
-
-    recognition.onend = function() {
-        input.placeholder = "Message JAWAAD AI...";
-    };
-
-    recognition.start();
+  conversationNames.slice(0, 8).forEach(name => {
+    const item = document.createElement("div");
+    item.className = "history";
+    item.textContent = "◦ " + name;
+    list.appendChild(item);
+  });
 }
 
 function newChat() {
-    messages.innerHTML = "";
-    document.getElementById("welcome").style.display = "";
-    document.getElementById("suggestions").style.display = "";
-    voiceStatus.textContent = "✦ JAWAAD is ready to assist you";
-    input.value = "";
-    input.focus();
+  messages.replaceChildren();
+
+  const welcome = document.createElement("div");
+  welcome.className = "welcome";
+  welcome.id = "welcome";
+  welcome.innerHTML = `
+    <h1>Hello, I'm <span>JAWAAD.</span></h1>
+    <p>Your AI assistant. Ask me anything.</p>
+    <div class="suggestions">
+      <button class="suggestion" onclick="usePrompt('Explain artificial intelligence simply')">✦ Explain AI simply</button>
+      <button class="suggestion" onclick="usePrompt('Help me write Python code')">⌘ Help with coding</button>
+      <button class="suggestion" onclick="usePrompt('Give me ideas for a project')">◈ Project ideas</button>
+      <button class="suggestion" onclick="usePrompt('Tell me something interesting')">◎ Something interesting</button>
+    </div>`;
+  messages.appendChild(welcome);
+  input.focus();
 }
 
-input.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") sendMessage();
+function startListening() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    statusText.textContent = "Speech recognition is not supported in this browser.";
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-IN";
+  recognition.interimResults = false;
+
+  micButton.classList.add("listening");
+  statusText.textContent = "Listening... Speak now.";
+  assistantStatus.textContent = "Listening...";
+
+  recognition.onresult = event => {
+    input.value = event.results[0][0].transcript;
+    statusText.textContent = "Voice captured. Sending message...";
+    sendMessage();
+  };
+
+  recognition.onerror = () => {
+    statusText.textContent = "Microphone error. Please try again.";
+  };
+
+  recognition.onend = () => {
+    micButton.classList.remove("listening");
+    assistantStatus.textContent = "Ready to assist you";
+  };
+
+  recognition.start();
+}
+
+input.addEventListener("keydown", event => {
+  if (event.key === "Enter") sendMessage();
 });
 </script>
 </body>
